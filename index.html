@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Weight Training Calculator</title>
+    <style>
+        body { font-family: sans-serif; padding: 20px; background: #f4f4f4; }
+        .card { background: white; border: 1px solid #ddd; padding: 20px; border-radius: 10px; max-width: 400px; margin: auto; }
+        input { width: 100%; padding: 10px; margin: 10px 0; border: 1px solid #ccc; border-radius: 4px; box-sizing: border-box; }
+        button { width: 100%; background: #28a745; color: white; padding: 12px; border: none; border-radius: 4px; cursor: pointer; font-size: 16px; margin-top: 10px; }
+        #result { margin-top: 20px; font-weight: bold; color: #333; font-size: 1.2em; text-align: center; }
+    </style>
+</head>
+<body>
+
+<div class="card">
+    <h2>Weight Training Calculator</h2>
+    
+    <label>Previous Week Weight (lbs):</label>
+    <input type="number" id="weight" value="135">
+    
+    <label>Previous Week AMRAP Reps:</label>
+    <input type="number" id="reps1" value="6">
+
+    <label>This Week Target Reps (Working Sets):</label>
+    <input type="number" id="targetReps" value="5">
+    
+    <label>Progression % (e.g., 1.05 for 5%):</label>
+    <input type="number" id="progression" value="1.05" step="0.01">
+    
+    <button onclick="calculate()">Calculate This Week Weight</button>
+    
+    <div id="result">Week 2 Weight: --</div>
+</div>
+
+<script>
+    function calculate() {
+        let w = parseFloat(document.getElementById('weight').value);
+        let r1 = parseFloat(document.getElementById('reps1').value);
+        let targetReps = parseFloat(document.getElementById('targetReps').value);
+        let prog = parseFloat(document.getElementById('progression').value);
+        
+        // 1. Calculate Estimated 1RM from Week 1 (Epley Formula)
+        let epley1RM = w * (1 + (r1 / 30));
+        
+        // 2. Apply progression percentage to the 1RM
+        let projected1RM = epley1RM * prog;
+        
+        // 3. Reverse Epley to find the target weight for Week 2's reps
+        let targetWeight = projected1RM / (1 + (targetReps / 30));
+        
+        // Round to nearest 5 lbs
+        let finalWeight = Math.round(targetWeight / 5) * 5;
+        
+        document.getElementById('result').innerText = "Week 2 Weight: " + finalWeight + " lbs";
+    }
+</script>
+
+</body>
+</html>
