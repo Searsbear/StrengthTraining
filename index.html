@@ -8,29 +8,51 @@
         input { width: 100%; padding: 10px; margin: 10px 0; border: 1px solid #ccc; border-radius: 4px; box-sizing: border-box; }
         button { width: 100%; background: #28a745; color: white; padding: 12px; border: none; border-radius: 4px; cursor: pointer; font-size: 16px; margin-top: 10px; }
         #result { margin-top: 20px; font-weight: bold; color: #333; font-size: 1.2em; text-align: center; }
+        #result2 { margin-top: 20px; font-weight: bold; color: #333; font-size: 1.2em; text-align: center; }
     </style>
 </head>
 <body>
 
 <div class="card">
-    <h2>Weight Training Calculator</h2>
+    <h2>0-10 Reps Training Calculator</h2>
     
     <label>Previous Week Weight (lbs):</label>
     <input type="number" id="weight" value="135">
     
     <label>Previous Week AMRAP Reps:</label>
-    <input type="number" id="reps1" value="6">
+    <input type="number" id="reps1" value="7">
 
     <label>This Week Target Reps (Working Sets):</label>
-    <input type="number" id="targetReps" value="5">
+    <input type="number" id="targetReps" value="6">
     
     <label>Progression % (e.g., 1.05 for 5%):</label>
     <input type="number" id="progression" value="1.05" step="0.01">
     
-    <button onclick="calculate()">Calculate This Week Weight</button>
+    <button onclick="calculateLow()">Calculate This Week Weight</button>
     
     <div id="result">This Week Weight: --</div>
 </div>
+
+<div class="card">
+    <h2>10-35 Reps Training Calculator</h2>
+    
+    <label>Previous Week Weight (lbs):</label>
+    <input type="number" id="weight2" value="90">
+    
+    <label>Previous Week AMRAP Reps:</label>
+    <input type="number" id="reps2" value="20">
+
+    <label>This Week Target Reps (Working Sets):</label>
+    <input type="number" id="targetReps2" value="15">
+    
+    <label>Progression % (e.g., 1.05 for 5%):</label>
+    <input type="number" id="progression2" value="1.05" step="0.01">
+    
+    <button onclick="calculateHigh()">Calculate This Week Weight</button>
+    
+    <div id="result2">This Week Weight: --</div>
+</div>
+
 <div class="card">
   <span><strong>
     Accessory Options
@@ -91,7 +113,7 @@
   <br><br>
   <span>Day 7:</span><br>
   <span>Rest</span>
-  <br><br><hr>
+  <br><br>
   
   <span><strong>Week 2</strong></span>
   <br>
@@ -123,7 +145,7 @@
   <br><br>
   <span>Day 7:</span><br>
   <span>Rest</span>
-  <br><br><hr>
+  <br><br>
   
   <span><strong>Week 3</strong></span>
   <br>
@@ -160,7 +182,7 @@
 </div>
 
 <script>
-    function calculate() {
+    function calculateLow() {
         let w = parseFloat(document.getElementById('weight').value);
         let r1 = parseFloat(document.getElementById('reps1').value);
         let targetReps = parseFloat(document.getElementById('targetReps').value);
@@ -179,6 +201,27 @@
         let finalWeight = Math.round(targetWeight / 5) * 5;
         
         document.getElementById('result').innerText = "This Week Weight: " + finalWeight + " lbs";
+    }
+    
+      function calculateHigh() {
+        let w2 = parseFloat(document.getElementById('weight2').value);
+        let r2 = parseFloat(document.getElementById('reps2').value);
+        let targetReps2 = parseFloat(document.getElementById('targetReps2').value);
+        let prog2 = parseFloat(document.getElementById('progression2').value);
+        
+        // 1. Calculate Estimated 1RM from Week 1 (Epley Formula)
+        let brzycki1RM = w2 * ((36)/(37-r2));
+        
+        // 2. Apply progression percentage to the 1RM
+        let projected1RM2 = brzycki1RM * prog2;
+        
+        // 3. Reverse Epley to find the target weight for Week 2's reps
+        let targetWeight2 = (projected1RM2/((36) / (37-targetReps2)));
+        
+        // Round to nearest 5 lbs
+        let finalWeight2 = Math.round(targetWeight2 / 5) * 5;
+        
+        document.getElementById('result2').innerText = "This Week Weight: " + finalWeight2 + " lbs";
     }
 </script>
 
